@@ -175,7 +175,32 @@ async function sendMessage() {
     if (!res.ok) throw new Error(`서버 오류: ${res.status}`);
     const data = await res.json();
     thinking.classList.remove('message--loading');
-    thinking.textContent = data.reply;
+
+    // 역공격 응답이면 시각적으로 구분
+    if (data.is_counter_attack) {
+      thinking.classList.add('message--counter-attack');
+      thinking.innerHTML = '';
+
+      // 배지
+      const badge = document.createElement('div');
+      badge.className = 'counter-attack-badge';
+      badge.textContent = 'COUNTER-ATTACK';
+      thinking.appendChild(badge);
+
+      // 상세 정보
+      const info = document.createElement('div');
+      info.className = 'counter-attack-info';
+      info.textContent = `Strategy: ${data.strategy || 'unknown'} | Category: ${data.attack_category || 'unknown'} | Blocked by: ${data.blocked_by || 'unknown'}`;
+      thinking.appendChild(info);
+
+      // 역공격 응답 본문
+      const body = document.createElement('div');
+      body.className = 'counter-attack-body';
+      body.textContent = data.reply;
+      thinking.appendChild(body);
+    } else {
+      thinking.textContent = data.reply;
+    }
   } catch (err) {
     thinking.classList.remove('message--loading');
     thinking.textContent = `오류가 발생했습니다: ${err.message}`;

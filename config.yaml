@@ -13,8 +13,8 @@ pipeline:
     gemini:
       enabled: true
       model: "gemini-2.0-flash"
-      num_calls: 5
-      block_threshold: 0.7
+      num_calls: 6
+      block_threshold: 0.67
       temperature: 0.2
 
     sanitizer:

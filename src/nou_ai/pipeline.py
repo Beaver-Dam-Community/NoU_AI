@@ -89,7 +89,7 @@ class GuardrailPipeline:
             total_latency_ms=(time.perf_counter() - start) * 1000,
         )
 
-    async def scan_async(self, text: str) -> GuardrailResult:
+    async def scan_async(self, text: str, attacker_metadata: Optional[Dict[str, Any]] = None) -> GuardrailResult:
         """Async version. Stages still run sequentially (order matters)."""
         start = time.perf_counter()
         stage_results: List[StageResult] = []
@@ -116,7 +116,7 @@ class GuardrailPipeline:
                 # Counter-attack: generate adversarial response instead of simple block
                 if self.counter_engine and self.counter_engine.enabled:
                     counter = self.counter_engine.counter(
-                        text, stage_results
+                        text, stage_results, attacker_metadata
                     )
                     return GuardrailResult(
                         decision=Decision.COUNTER_ATTACK,

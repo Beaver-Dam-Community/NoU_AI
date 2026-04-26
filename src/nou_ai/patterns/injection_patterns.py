@@ -79,4 +79,34 @@ DEFAULT_PATTERNS: List[PatternRule] = [
         severity=0.85,
         description="Markdown-style instruction injection markers",
     ),
+    PatternRule(
+        name="ignore_previous_direct",
+        pattern=r"(?i)\b(ignore|forget|disregard)\b.{0,15}\b(previous|prior|all|above|every)\b.{0,15}\b(instruction|direction|rule|prompt|command)",
+        severity=0.95,
+        description="Direct 'ignore previous instructions' variants (from LlamaFirewall)",
+    ),
+    PatternRule(
+        name="secret_key_extraction",
+        pattern=r"(?i)\b(what|tell|give|share|reveal).{0,20}\b(secret|hidden|private)\s*(key|password|token|code|credential)",
+        severity=0.9,
+        description="Attempts to extract secret keys or credentials",
+    ),
+    PatternRule(
+        name="multilingual_override_ko",
+        pattern=r"(이전|위의|기존|시스템)\s*(지시|명령|규칙|프롬프트|설정).{0,20}(무시|잊어|버려|취소|삭제|제거)",
+        severity=0.9,
+        description="Korean language instruction override attempts",
+    ),
+    PatternRule(
+        name="multilingual_override_zh",
+        pattern=r"(忽略|无视|忘记|放弃).{0,20}(之前|以上|所有|系统).{0,20}(指令|指示|规则|提示)",
+        severity=0.9,
+        description="Chinese language instruction override attempts",
+    ),
+    PatternRule(
+        name="output_format_hijack",
+        pattern=r"(?i)\b(respond|reply|answer|output)\b.{0,20}\b(only|just|exactly)\b.{0,20}(yes|no|true|false|one word|single word)",
+        severity=0.6,
+        description="Attempts to force specific output format (lower severity — may be legitimate)",
+    ),
 ]
