@@ -1,11 +1,15 @@
+
 # Environment
 .env
 .env.local
 .env.*.local
+localtest/.env
 
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
+*.pyo
 *$py.class
 *.egg-info/
 dist/
@@ -13,6 +17,9 @@ build/
 *.egg
 .venv/
 venv/
+
+# 의존성
+node_modules/
 
 # Vector indices
 *.faiss
@@ -36,3 +43,12 @@ Thumbs.db
 .pytest_cache/
 htmlcov/
 .coverage
+
+# 채팅 히스토리 (로컬 전용)
+localtest/history/
+
+# 프론트엔드 에셋 예외
+!localtest/frontend/cmux.png
+
+# 기타
+.DS_Store

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI'M Sorry</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- 왼쪽 사이드바 -->
+  <aside class="sidebar">
+    <div class="logo"><img src="cmux.png" alt="CMUX" class="logo-img" /></div>
+    <nav class="sidebar-nav">
+      <a class="nav-item active" data-page="home" href="#">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">홈</span>
+      </a>
+      <a class="nav-item" data-page="tools" href="#">
+        <span class="nav-icon">✏️</span>
+        <span class="nav-label">도구</span>
+      </a>
+      <a class="nav-item" data-page="saved" href="#">
+        <span class="nav-icon">🔖</span>
+        <span class="nav-label">저장됨</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- 헤더 -->
+  <header class="header">
+    <button class="hamburger">☰</button>
+    <span class="header-chat-title" id="header-chat-title"></span>
+    <div class="header-actions">
+      <button class="btn-signup">무료로 회원가입</button>
+      <button class="btn-login">로그인</button>
+    </div>
+  </header>
+
+  <!-- ══════════════ 페이지들 ══════════════ -->
+
+  <!-- 홈 페이지 (초기 상태) -->
+  <main class="main page" id="page-home">
+    <!-- 초기 화면: 로고 + 탭 + 추천칩 -->
+    <div id="home-intro">
+      <div class="brand-title">
+        <img src="aim.webp" alt="AI'M Sorry" class="brand-icon-img" />
+        <span class="brand-name">AI'M Sorry</span>
+      </div>
+      <div class="tabs">
+        <button class="tab active">💬 채팅</button>
+        <button class="tab">🛡️ AI 탐지방어</button>
+        <button class="tab">▶️ 유튜브 요약</button>
+        <button class="tab">🎙️ 실시간 녹음</button>
+      </div>
+    </div>
+
+    <!-- 채팅 스레드 (전송 후 채워짐) -->
+    <div class="chat-thread" id="chat-thread"></div>
+
+    <!-- 입력창 -->
+    <div class="chat-box" id="chat-box">
+      <textarea class="chat-input" id="chat-input" placeholder="무엇이든 물어보세요" rows="1"></textarea>
+      <div class="chat-actions">
+        <button class="btn-attach" id="btn-attach" title="파일 첨부">＋</button>
+        <input type="file" id="file-input" class="hidden" accept="image/*,.pdf,.txt,.md" />
+        <div class="model-select-wrap">
+          <select class="model-select" id="model-select">
+            <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro</option>
+            <option value="gemini-3.1-flash-lite-preview">Gemini 3.1 Flash Lite</option>
+            <option value="gemini-2.5-flash-preview-04-17">Gemini 2.5 Flash</option>
+          </select>
+        </div>
+        <button class="btn-send" id="btn-send">↑</button>
+      </div>
+    </div>
+
+    <!-- 추천 프롬프트 -->
+    <div class="suggestions" id="suggestions">
+      <button class="suggestion-chip" data-prompt="오늘 할 일 정리를 도와줘">📋 할 일 정리</button>
+      <button class="suggestion-chip" data-prompt="이메일 초안을 작성해줘">✉️ 이메일 작성</button>
+      <button class="suggestion-chip" data-prompt="코드 리뷰를 해줘">💻 코드 리뷰</button>
+      <button class="suggestion-chip" data-prompt="아이디어 브레인스토밍을 도와줘">💡 브레인스토밍</button>
+    </div>
+
+    <!-- 하단 안내 (채팅 모드) -->
+    <p class="chat-disclaimer hidden" id="chat-disclaimer">AI가 제공하는 답변은 완벽하지 않을 수 있어요</p>
+  </main>
+
+  <!-- 히스토리 페이지 -->
+  <main class="main page page--tool hidden" id="page-saved">
+    <div class="tool-page-header">
+      <h2 class="tool-page-title">🔖 저장된 대화</h2>
+    </div>
+    <div class="history-body">
+      <div class="history-list" id="history-list">
+        <p class="history-empty">불러오는 중...</p>
+      </div>
+      <div class="history-content-wrap">
+        <div class="history-content-placeholder" id="history-placeholder">
+          <p>날짜를 선택하면 대화 내용이 표시됩니다.</p>
+        </div>
+        <pre class="history-content hidden" id="history-content"></pre>
+      </div>
+    </div>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <a href="#">고객센터</a>
+    <a href="#">이용약관</a>
+    <a href="#">개인정보처리방침</a>
+    <a href="#">청소년 보호정책</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
