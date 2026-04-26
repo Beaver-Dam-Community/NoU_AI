@@ -1,0 +1,36 @@
+pipeline:
+  stages:
+    regex:
+      enabled: true
+      block_threshold: 0.7
+
+    embedding:
+      enabled: true
+      model: "sentence-transformers/all-MiniLM-L6-v2"
+      similarity_threshold: 0.82
+      top_k: 5
+
+    gemini:
+      enabled: true
+      model: "gemini-2.0-flash"
+      num_calls: 5
+      block_threshold: 0.7
+      temperature: 0.2
+
+    sanitizer:
+      enabled: true
+      escape_special_tokens: true
+
+counter_attack:
+  enabled: true
+  combo_mode: false
+  combo_count: 2
+  selector:
+    randomization_factor: 0.2
+  tracker:
+    fast_retry_threshold_s: 10.0
+    success_silence_threshold_s: 120.0
+    session_ttl_s: 3600.0
+
+logging:
+  level: "INFO"

@@ -1,25 +1,54 @@
-# 환경변수 (API 키 포함) - 절대 커밋 금지
+
+# Environment
 .env
 .env.local
 .env.*.local
 localtest/.env
 
-# 의존성
-node_modules/
+# Python
 __pycache__/
+*.py[cod]
 *.pyc
 *.pyo
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
 
-# 빌드 스크래핑 산출물
-*.png
-wrtn_snapshot.html
-localtest_screenshot*.png
+# 의존성
+node_modules/
 
-# 프론트엔드 에셋 예외
-!localtest/frontend/cmux.png
+# Vector indices
+*.faiss
+*.index
+*.ann
+
+# Models (downloaded at runtime)
+models/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test / Coverage
+.pytest_cache/
+htmlcov/
+.coverage
 
 # 채팅 히스토리 (로컬 전용)
 localtest/history/
+
+# 프론트엔드 에셋 예외
+!localtest/frontend/cmux.png
 
 # 기타
 .DS_Store
