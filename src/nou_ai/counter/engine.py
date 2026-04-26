@@ -77,13 +77,12 @@ class CounterAttackEngine:
         strategy_type = self.selector.select(attack_category, exclude=failed)
 
         # 4. Generate response
-        strategy = self._strategies[strategy_type]
-
         if self.combo_mode:
-            response = self._generate_combo(
-                original_input, attack_category, failed
+            response, combo_strategies = self._generate_combo(
+                original_input, attack_category, failed, strategy_type
             )
         else:
+            strategy = self._strategies[strategy_type]
             response = strategy.generate(original_input, attack_category)
 
         # 5. Record for self-improvement
@@ -117,16 +116,25 @@ class CounterAttackEngine:
         original_input: str,
         attack_category: AttackCategory,
         exclude: List[CounterStrategy],
-    ) -> str:
-        """Combine multiple strategies into one response."""
+        primary_strategy: CounterStrategy,
+    ) -> tuple:
+        """Combine multiple strategies into one response. Returns (response, strategies_used)."""
         parts = []
         used = list(exclude)
-        for _ in range(self.combo_count):
+
+        # Primary strategy first (the one that gets tracked)
+        strategy = self._strategies[primary_strategy]
+        parts.append(strategy.generate(original_input, attack_category))
+        used.append(primary_strategy)
+
+        # Additional strategies
+        for _ in range(self.combo_count - 1):
             st = self.selector.select(attack_category, exclude=used)
             strategy = self._strategies[st]
             parts.append(strategy.generate(original_input, attack_category))
             used.append(st)
-        return "\n\n---\n\n".join(parts)
+
+        return "\n\n---\n\n".join(parts), used
 
     def get_stats(self) -> Dict[str, Any]:
         return self.selector.get_stats()

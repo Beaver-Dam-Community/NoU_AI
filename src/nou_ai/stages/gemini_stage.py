@@ -76,22 +76,43 @@ class GeminiStage(BaseStage):
         return "SAFE"
 
     def _call_once(self, text: str) -> str:
+        import time as _time
         self._ensure_client()
         prompt = CLASSIFICATION_PROMPT.format(input_text=text)
-        response = self._client.generate_content(
-            prompt,
-            generation_config={"temperature": self.temperature, "max_output_tokens": 10},
-        )
-        return self._parse_response(response.text)
+        for attempt in range(3):
+            try:
+                response = self._client.generate_content(
+                    prompt,
+                    generation_config={"temperature": self.temperature, "max_output_tokens": 10},
+                )
+                return self._parse_response(response.text)
+            except Exception as e:
+                if "429" in str(e) or "ResourceExhausted" in str(e):
+                    _time.sleep(1.0 * (attempt + 1))
+                    continue
+                logger.warning("Gemini call failed: %s", e)
+                return "SAFE"
+        logger.warning("Gemini call exhausted retries, defaulting to SAFE")
+        return "SAFE"
 
     async def _call_once_async(self, text: str) -> str:
         self._ensure_client()
         prompt = CLASSIFICATION_PROMPT.format(input_text=text)
-        response = await self._client.generate_content_async(
-            prompt,
-            generation_config={"temperature": self.temperature, "max_output_tokens": 10},
-        )
-        return self._parse_response(response.text)
+        for attempt in range(3):
+            try:
+                response = await self._client.generate_content_async(
+                    prompt,
+                    generation_config={"temperature": self.temperature, "max_output_tokens": 10},
+                )
+                return self._parse_response(response.text)
+            except Exception as e:
+                if "429" in str(e) or "ResourceExhausted" in str(e):
+                    await asyncio.sleep(1.0 * (attempt + 1))
+                    continue
+                logger.warning("Gemini async call failed: %s", e)
+                return "SAFE"
+        logger.warning("Gemini async call exhausted retries, defaulting to SAFE")
+        return "SAFE"
 
     def _build_result(self, votes: List[str]) -> StageResult:
         safe_count = votes.count("SAFE")
