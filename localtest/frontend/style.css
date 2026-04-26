@@ -585,6 +585,41 @@ body {
   font-style: italic;
 }
 
+/* 역공격 메시지 스타일 */
+.message--counter-attack {
+  background: #fff5f5;
+  border: 1.5px solid #e53e3e;
+  border-bottom-left-radius: 4px;
+  position: relative;
+}
+
+.counter-attack-badge {
+  display: inline-block;
+  background: #e53e3e;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.counter-attack-info {
+  font-size: 11px;
+  color: #e53e3e;
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #fed7d7;
+}
+
+.counter-attack-body {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 /* ── 푸터 ── */
 .footer {
   position: fixed;
